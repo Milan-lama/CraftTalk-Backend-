@@ -10,7 +10,7 @@ from django.db.models import Q
 class ShowMessages(APIView):
     def get(self, request,reciever=None):
         try:
-            reciever = request.GET.get('reciever')
+            # reciever = request.GET.get('reciever')
             print(reciever)
             # Access token from the Authorization header
             auth_header = request.headers.get('Authorization')
@@ -23,8 +23,7 @@ class ShowMessages(APIView):
             sender = Token.objects.get(key=token)
             sender_username = sender.user.username
             # Fetch messages based on the sender and receiver
-            data = Messages.objects.filter(Q(reciever=reciever, sender=sender_username) |Q(reciever=sender_username, sender=reciever)
-    )
+            data = Messages.objects.filter(Q(reciever=reciever, sender=sender_username) |Q(reciever=sender_username, sender=reciever))
             print(data)
             # Serialize the messages
             serializer = MessageSerializer(data, many=True)
